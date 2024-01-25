@@ -3,7 +3,8 @@ import streamlit as st
 import time
 import pandas
 
-API_KEY = st.text_input("API kulcs openweathermap.org oldalhoz", type="password")
+# API_KEY = st.text_input("API kulcs openweathermap.org oldalhoz", type="password")
+API_KEY = st.secrets["API_KEY"]
 
 if API_KEY:
     place = st.text_input("Válassz helyet", "Budapest")
@@ -71,9 +72,13 @@ if API_KEY:
     for item in tabs:
         with item:
             temperature = [dict["main"]["temp"] for dict in days[szam]]
+            feels = [dict["main"]["feels_like"] for dict in days[szam]]
             hours = [h["dt_txt"][11:16] for h in days[szam]]
             icons = [i["weather"][0]["icon"] for i in days[szam]]
             descriptions = [i["weather"][0]["description"] for i in days[szam]]
+            chdt = pandas.DataFrame({"hőfok": temperature, "időpont": hours, "hőérzet":feels})
+            st.write("napi hőmérséklet")
+            st.line_chart(chdt, x="időpont", y=["hőfok", "hőérzet"], color=[[0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
             c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
             cols = [c1, c2, c3, c4, c5, c6, c7, c8]
             index = 0
@@ -87,5 +92,5 @@ if API_KEY:
 
     chart_data = pandas.DataFrame({"hőfok": [dict["main"]["temp"] for dict in dayly_data],
                                    "dátum": [dict["dt_txt"] for dict in dayly_data]})
-    st.subheader("Hőmérsékletváltozás")
+    st.subheader("Hőmérsékletváltozás 5 napra")
     st.bar_chart(chart_data, x="dátum", y="hőfok", color=[0.0, 1.0, 0.0])
