@@ -86,6 +86,7 @@ if API_KEY:
                 with i:
                     i.write(hours[index])
                     i.write(f"{int(temperature[index])} °C")
+                    i.image(f"images/{icons[index]}@2x.png", width=70)
                     i.write(descriptions[index])
                     index = index + 1
             szam = szam + 1
