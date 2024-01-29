@@ -26,6 +26,7 @@ if API_KEY:
     hours = [h["dt_txt"][11:16] for h in day1]
     icons = [i["weather"][0]["icon"] for i in day1]
     descriptions = [i["weather"][0]["description"] for i in day1]
+    ws = [w["wind"]["speed"] for w in day1]
     now = time.strftime("%H:%M")
     napok = []
 
@@ -33,7 +34,7 @@ if API_KEY:
         napok.append(i["dt_txt"][5:10])
 
     with st.container():
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             temp = firstdata["main"]["temp"]
             st.title(now)
@@ -44,7 +45,11 @@ if API_KEY:
 
         with col2:
             sky = firstdata["weather"][0]["icon"]
+            st.subheader("")
             st.subheader(firstdata["weather"][0]["description"])
+            st.subheader(f'szél: {int(firstdata["wind"]["speed"])} km/h')
+
+        with col3:
             st.image(f"images/{sky}@2x.png", width=220)
 
         c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
@@ -56,7 +61,7 @@ if API_KEY:
                 i.subheader(f"{int(temperature[ind])} °C")
                 i.image(f"images/{icons[ind]}@2x.png", width=70)
                 i.write(descriptions[ind])
-
+                i.write(f"szél: {int(ws[ind])} km/h")
                 ind = ind + 1
 
         gomb = st.button("nyomd meg")
@@ -76,7 +81,8 @@ if API_KEY:
             hours = [h["dt_txt"][11:16] for h in days[szam]]
             icons = [i["weather"][0]["icon"] for i in days[szam]]
             descriptions = [i["weather"][0]["description"] for i in days[szam]]
-            chdt = pandas.DataFrame({"hőfok": temperature, "időpont": hours, "hőérzet":feels})
+            winds = [wind["wind"]["speed"] for wind in days[szam]]
+            chdt = pandas.DataFrame({"hőfok": temperature, "időpont": hours, "hőérzet": feels})
             st.write("napi hőmérséklet")
             st.line_chart(chdt, x="időpont", y=["hőfok", "hőérzet"], color=[[0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
             c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
@@ -88,6 +94,7 @@ if API_KEY:
                     i.write(f"{int(temperature[index])} °C")
                     i.image(f"images/{icons[index]}@2x.png", width=70)
                     i.write(descriptions[index])
+                    i.write(f"szél: {int(winds[index])} km/h")
                     index = index + 1
             szam = szam + 1
 
