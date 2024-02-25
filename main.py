@@ -23,6 +23,7 @@ if API_KEY:
     day4 = dayly_data[24:32]
     day5 = dayly_data[32:40]
     temperature = [dict["main"]["temp"] for dict in day1]
+    firstday = [h["dt_txt"][5:10] for h in day1]
     hours = [h["dt_txt"][11:16] for h in day1]
     icons = [i["weather"][0]["icon"] for i in day1]
     descriptions = [i["weather"][0]["description"] for i in day1]
@@ -57,8 +58,9 @@ if API_KEY:
         ind = 0
         for i in cols:
             with i:
-                i.subheader(hours[ind])
-                i.subheader(f"{int(temperature[ind])} °C")
+                i.write(firstday[ind])
+                i.write(hours[ind])
+                i.write(f"{int(temperature[ind])} °C")
                 i.image(f"images/{icons[ind]}@2x.png", width=70)
                 i.write(descriptions[ind])
                 i.write(f"szél: {int(ws[ind])} km/h")
@@ -78,6 +80,7 @@ if API_KEY:
         with item:
             temperature = [dict["main"]["temp"] for dict in days[szam]]
             feels = [dict["main"]["feels_like"] for dict in days[szam]]
+            thisdays = [h["dt_txt"][5:10] for h in days[szam]]
             hours = [h["dt_txt"][11:16] for h in days[szam]]
             icons = [i["weather"][0]["icon"] for i in days[szam]]
             descriptions = [i["weather"][0]["description"] for i in days[szam]]
@@ -90,6 +93,7 @@ if API_KEY:
             index = 0
             for i in cols:
                 with i:
+                    i.write(thisdays[index])
                     i.write(hours[index])
                     i.write(f"{int(temperature[index])} °C")
                     i.image(f"images/{icons[index]}@2x.png", width=70)
