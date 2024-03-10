@@ -51,9 +51,7 @@ if API_KEY:
             temp = firstdata["main"]["temp"]
             st.title(now)
             st.title(f'{int(temp)} °C')
-            g = st.toggle("mutass valamit")
-            if g:
-                st.info("nagy siker")
+
 
         with col2:
             sky = firstdata["weather"][0]["icon"]
@@ -64,18 +62,6 @@ if API_KEY:
         with col3:
             st.image(f"images/{sky}@2x.png", width=220)
 
-#        c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
-#        cols = [c1, c2, c3, c4, c5, c6, c7, c8]
-#        ind = 0
-#        for i in cols:
-#            with i:
-#                i.write(firstday[ind])
-#                i.write(hours[ind])
-#                i.write(f"{int(temperature[ind])} °C")
-#                i.image(f"images/{icons[ind]}@2x.png", width=70)
-#                i.write(descriptions[ind])
-#                i.write(f"szél: {int(ws[ind])} km/h")
-#                ind = ind + 1
 
         gomb = st.button("nyomd meg")
         if gomb:
