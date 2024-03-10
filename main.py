@@ -14,9 +14,8 @@ background-size: cover;
 '''
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-
-# API_KEY = st.text_input("API kulcs openweathermap.org oldalhoz", type="password")
 API_KEY = st.secrets["API_KEY"]
+
 
 if API_KEY:
     place = st.text_input("Válassz helyet", "Budapest")
@@ -65,18 +64,18 @@ if API_KEY:
         with col3:
             st.image(f"images/{sky}@2x.png", width=220)
 
-        c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
-        cols = [c1, c2, c3, c4, c5, c6, c7, c8]
-        ind = 0
-        for i in cols:
-            with i:
-                i.write(firstday[ind])
-                i.write(hours[ind])
-                i.write(f"{int(temperature[ind])} °C")
-                i.image(f"images/{icons[ind]}@2x.png", width=70)
-                i.write(descriptions[ind])
-                i.write(f"szél: {int(ws[ind])} km/h")
-                ind = ind + 1
+#        c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
+#        cols = [c1, c2, c3, c4, c5, c6, c7, c8]
+#        ind = 0
+#        for i in cols:
+#            with i:
+#                i.write(firstday[ind])
+#                i.write(hours[ind])
+#                i.write(f"{int(temperature[ind])} °C")
+#                i.image(f"images/{icons[ind]}@2x.png", width=70)
+#                i.write(descriptions[ind])
+#                i.write(f"szél: {int(ws[ind])} km/h")
+#                ind = ind + 1
 
         gomb = st.button("nyomd meg")
         if gomb:
@@ -98,8 +97,7 @@ if API_KEY:
             descriptions = [i["weather"][0]["description"] for i in days[szam]]
             winds = [wind["wind"]["speed"] for wind in days[szam]]
             chdt = pandas.DataFrame({"hőfok": temperature, "időpont": hours, "hőérzet": feels})
-            st.write("napi hőmérséklet")
-            st.line_chart(chdt, x="időpont", y=["hőfok", "hőérzet"], color=[[0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+
             c1, c2, c3, c4, c5, c6, c7, c8 = st.columns(8)
             cols = [c1, c2, c3, c4, c5, c6, c7, c8]
             index = 0
@@ -113,6 +111,9 @@ if API_KEY:
                     i.write(f"szél: {int(winds[index])} km/h")
                     index = index + 1
             szam = szam + 1
+
+            st.write("napi hőmérséklet")
+            st.line_chart(chdt, x="időpont", y=["hőfok", "hőérzet"], color=[[0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
 
     chart_data = pandas.DataFrame({"hőfok": [dict["main"]["temp"] for dict in dayly_data],
                                    "dátum": [dict["dt_txt"] for dict in dayly_data]})
