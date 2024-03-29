@@ -1,13 +1,8 @@
-import base64
 
 import requests
 import streamlit as st
 import time
 import pandas
-
-
-with open("tisztaeg.jpg", "rb") as f:
-    data = f.read()
 
 
 
