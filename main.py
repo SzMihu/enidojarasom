@@ -1,17 +1,23 @@
+import base64
+
 import requests
 import streamlit as st
 import time
 import pandas
 
 
-page_bg_img = f'''
+with open("tisztaeg.jpg", "rb") as f:
+    data = f.read()
+
+img = base64.b64encode(data).decode()
+
+page_bg_img = f"""
 <style>
-.stApp {{
-background-image: url("https://media.istockphoto.com/id/1157569060/hu/fot%C3%B3/gy%C3%B6ny%C3%B6r%C5%B1-tiszta-k%C3%A9k-%C3%A9g-h%C3%A1tt%C3%A9r-sima-nagy-feh%C3%A9r-felh%C5%91-a-reggeli-id%C5%91sugarak-napf%C3%A9ny-sz%C3%B3k%C3%B6zt-a.jpg?s=1024x1024&w=is&k=20&c=uOvofqjcjrtORw5MwbooayNGxdf5jFk4TUZUpMwUwuQ=");
-background-size: cover;
-}}
+.stApp {{ background-image: url("data:image/jpg;base64,{img}"); background-size: cover; }}
 </style>
-'''
+"""
+
+
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
 API_KEY = st.secrets["API_KEY"]
